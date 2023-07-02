@@ -1,0 +1,5 @@
+{
+    "rules": {
+      "no-octal-escape": 0
+    }
+  }
