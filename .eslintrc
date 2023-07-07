@@ -1,5 +1,9 @@
 {
-    "rules": {
-      "no-octal-escape": 0
-    }
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "no-octal-escape": "off"
   }
+}

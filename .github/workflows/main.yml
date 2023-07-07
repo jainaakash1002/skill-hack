@@ -1,0 +1,49 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AWS_HOST: 13.234.19.65
+      USER: ubuntu
+      DEPLOY_FOLDER: landingPage
+      SERVER_SSH_KEY: ${{ secrets.MAIN_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+
+      - name: Install npm dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run build task
+        run: CI=false npm run build
+
+      - name: Copy files before deploy
+        run: node before_deploy.js
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.MAIN_SECRET }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "build/"
+          REMOTE_HOST: 13.234.19.65
+          REMOTE_USER: ubuntu
+          TARGET: "~/landingPage/"
+          EXCLUDE: "/node_modules/"
+
+      - name: RUN SERVER
+        uses: appleboy/ssh-action@master
+        with:
+          host: 13.234.19.65
+          username: ubuntu
+          key: ${{ secrets.MAIN_SECRET }}
+          script: sh ~/landingPage/main.deploy.sh
