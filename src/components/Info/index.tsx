@@ -1,6 +1,14 @@
 import React from "react";
-import { Box, HStack } from "@chakra-ui/react";
-import { SkillHackLogo, First, InfoPhone } from "../../assets";
+import { Box, Flex, Link, VStack } from "@chakra-ui/react";
+import {
+  Heading1,
+  SkillHackLogo,
+  InfoPhone,
+  Heading2,
+  Heading3,
+  Button1,
+} from "../../assets";
+import Urls from "../../utils";
 
 const Info: React.FC = () => {
   return (
@@ -11,10 +19,22 @@ const Info: React.FC = () => {
       p={"2rem"}
     >
       <SkillHackLogo />
-      <HStack>
-        <First />
-        <InfoPhone />
-      </HStack>
+      <Flex
+        flexDir={["column", "column", "row"]}
+        alignItems={["center", "center", "start"]}
+      >
+        <VStack pt={"8rem"}>
+          <Heading1 />
+          <Heading2 />
+          <Heading3 />
+          <Link href={Urls?.playStore} isExternal>
+            <Button1 />
+          </Link>
+        </VStack>
+        <Flex width={"100%"}>
+          <InfoPhone />
+        </Flex>
+      </Flex>
     </Box>
   );
 };
